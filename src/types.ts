@@ -28,3 +28,13 @@ export interface Day {
     exercises: Exercise[]; // Embedded exercises, not IDs
     exerciseIds?: string[]; // IDs of exercises
 }
+
+export interface Session {
+    id: string;
+    title: string;
+    duration: number; // in minutes
+    videoUrl: string;
+    thumbnailUrl: string;
+    createdAt: string;
+    order?: number;
+}

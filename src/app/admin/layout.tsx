@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogOut, LayoutDashboard, Dumbbell } from "lucide-react";
+import { LogOut, LayoutDashboard, Dumbbell, Video } from "lucide-react";
 
 export default function AdminLayout({
     children,
@@ -20,6 +20,13 @@ export default function AdminLayout({
                     >
                         <LayoutDashboard className="w-5 h-5 mr-3" />
                         Programs
+                    </Link>
+                    <Link
+                        href="/admin/sessions"
+                        className="flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                        <Video className="w-5 h-5 mr-3" />
+                        Sessions
                     </Link>
                 </nav>
                 <div className="absolute bottom-0 w-64 p-6 border-t border-gray-200 dark:border-gray-700">
