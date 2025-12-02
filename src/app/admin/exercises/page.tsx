@@ -46,9 +46,9 @@ export default async function ExercisesPage() {
                                 {exercise.name}
                             </h3>
                             <div className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400">
-                                {exercise.sets > 0 && <span>{exercise.sets} sets</span>}
-                                {exercise.reps > 0 && <span>{exercise.reps} reps</span>}
-                                {exercise.time && exercise.time > 0 && <span>{exercise.time}s</span>}
+                                {exercise.sets != null && exercise.sets > 0 && <span>{exercise.sets} sets</span>}
+                                {exercise.reps != null && exercise.reps > 0 && <span>{exercise.reps} reps</span>}
+                                {exercise.time != null && exercise.time > 0 && <span>{exercise.time}s</span>}
                             </div>
                         </div>
                     </div>
