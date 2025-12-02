@@ -41,17 +41,49 @@ export default function VideoUploader({
                 }
             };
 
-            uploadRes.onload = () => {
+            uploadRes.onload = async () => {
                 if (uploadRes.status >= 200 && uploadRes.status < 300) {
-                    const response = JSON.parse(uploadRes.responseText);
-                    // Cloudflare Stream returns the result in the response
-                    const hlsUrl = response.result.playback.hls;
-                    setPreview(hlsUrl);
-                    onUploadComplete(hlsUrl);
-                    setUploading(false);
+                    try {
+                        let hlsUrl = "";
+
+                        // Try to parse response if it exists
+                        if (uploadRes.responseText) {
+                            const response = JSON.parse(uploadRes.responseText);
+                            if (response.result?.playback?.hls) {
+                                hlsUrl = response.result.playback.hls;
+                            }
+                        }
+
+                        // If no HLS URL yet (empty response or missing in JSON), fetch from API
+                        if (!hlsUrl) {
+                            // Extract UID from upload URL
+                            const uid = url.split('/').pop();
+                            if (uid) {
+                                const detailsRes = await fetch(`/api/upload/stream/${uid}`);
+                                if (detailsRes.ok) {
+                                    const details = await detailsRes.json();
+                                    if (details.playback?.hls) {
+                                        hlsUrl = details.playback.hls;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (hlsUrl) {
+                            setPreview(hlsUrl);
+                            onUploadComplete(hlsUrl);
+                        } else {
+                            throw new Error("Could not retrieve video URL");
+                        }
+                    } catch (parseError: any) {
+                        console.error("Failed to process upload response:", parseError);
+                        alert(`Upload failed: ${parseError.message}`);
+                    } finally {
+                        setUploading(false);
+                    }
                 } else {
                     console.error("Upload failed", uploadRes.responseText);
-                    alert("Upload failed");
+                    alert(`Upload failed with status ${uploadRes.status}`);
                     setUploading(false);
                 }
             };

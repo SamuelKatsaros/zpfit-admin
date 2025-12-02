@@ -18,6 +18,7 @@ export default function DayEditor({
     const router = useRouter();
     const [title, setTitle] = useState(day.title);
     const [thumbnailUrl, setThumbnailUrl] = useState(day.thumbnailUrl);
+    const [duration, setDuration] = useState<number>(day.duration || 30);
     const [exerciseIds, setExerciseIds] = useState<string[]>(day.exerciseIds || []);
     const [loading, setLoading] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -37,6 +38,7 @@ export default function DayEditor({
                     title,
                     thumbnailUrl,
                     exerciseIds,
+                    duration,
                 }),
             });
 
@@ -93,6 +95,18 @@ export default function DayEditor({
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         className="w-full p-2 rounded bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Duration (min)
+                    </label>
+                    <input
+                        type="number"
+                        value={duration}
+                        onChange={(e) => setDuration(Number(e.target.value))}
+                        className="w-full p-2 rounded bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                        min={1}
                     />
                 </div>
                 <div>

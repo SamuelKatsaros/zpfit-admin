@@ -3,21 +3,23 @@ import { NextResponse } from "next/server";
 
 export async function PUT(
     request: Request,
-    { params }: { params: { programId: string; dayId: string } }
+    { params }: { params: Promise<{ programId: string; dayId: string }> }
 ) {
     try {
-        const { title, thumbnailUrl, exerciseIds } = await request.json();
+        const { programId, dayId } = await params;
+        const { title, thumbnailUrl, exerciseIds, duration } = await request.json();
         const db = await getFirestore();
 
         await db
             .collection("programs")
-            .doc(params.programId)
+            .doc(programId)
             .collection("days")
-            .doc(params.dayId)
+            .doc(dayId)
             .update({
                 title,
                 thumbnailUrl,
                 exerciseIds,
+                duration,
             });
 
         return NextResponse.json({ success: true });

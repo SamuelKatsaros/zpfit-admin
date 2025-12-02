@@ -18,6 +18,7 @@ export default function DayList({
     const [isAdding, setIsAdding] = useState(false);
     const [newDayTitle, setNewDayTitle] = useState("");
     const [newDayThumbnail, setNewDayThumbnail] = useState("");
+    const [newDayDuration, setNewDayDuration] = useState<number>(30);
     const [loading, setLoading] = useState(false);
 
     const handleAddDay = async (e: React.FormEvent) => {
@@ -36,6 +37,7 @@ export default function DayList({
                     title: newDayTitle,
                     thumbnailUrl: newDayThumbnail,
                     dayNumber: days.length + 1,
+                    duration: newDayDuration,
                 }),
             });
 
@@ -45,6 +47,7 @@ export default function DayList({
                 setIsAdding(false);
                 setNewDayTitle("");
                 setNewDayThumbnail("");
+                setNewDayDuration(30);
                 router.refresh();
             } else {
                 alert("Failed to add day");
@@ -81,7 +84,7 @@ export default function DayList({
                             Day {day.dayNumber}: {day.title}
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {day.exerciseIds?.length || 0} Exercises
+                            {day.duration} min • {day.exerciseIds?.length || 0} Exercises
                         </p>
                     </div>
                     <button
@@ -104,6 +107,17 @@ export default function DayList({
                                 value={newDayTitle}
                                 onChange={(e) => setNewDayTitle(e.target.value)}
                                 className="w-full p-2 rounded bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Duration (min)</label>
+                            <input
+                                type="number"
+                                value={newDayDuration}
+                                onChange={(e) => setNewDayDuration(Number(e.target.value))}
+                                className="w-full p-2 rounded bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                                min={1}
                                 required
                             />
                         </div>

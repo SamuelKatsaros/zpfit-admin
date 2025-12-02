@@ -26,9 +26,10 @@ async function getAllExercises() {
 export default async function DayEditorPage({
     params,
 }: {
-    params: { programId: string; dayId: string };
+    params: Promise<{ programId: string; dayId: string }>;
 }) {
-    const day = await getDay(params.programId, params.dayId);
+    const { programId, dayId } = await params;
+    const day = await getDay(programId, dayId);
     const exercises = await getAllExercises();
 
     if (!day) notFound();
@@ -36,7 +37,7 @@ export default async function DayEditorPage({
     return (
         <div className="max-w-4xl mx-auto">
             <Link
-                href={`/admin/programs/${params.programId}`}
+                href={`/admin/programs/${programId}`}
                 className="flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-6"
             >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -48,7 +49,7 @@ export default async function DayEditorPage({
             </h1>
 
             <DayEditor
-                programId={params.programId}
+                programId={programId}
                 day={day}
                 allExercises={exercises}
             />

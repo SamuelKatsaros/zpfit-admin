@@ -21,6 +21,9 @@ export default function ImageUploader({
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // Create local preview immediately
+        const localPreview = URL.createObjectURL(file);
+        setPreview(localPreview);
         setUploading(true);
 
         try {
@@ -30,26 +33,35 @@ export default function ImageUploader({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ contentType: file.type, folder }),
             });
+
+            if (!res.ok) {
+                throw new Error(`Failed to get upload URL: ${res.statusText}`);
+            }
+
             const { url, key } = await res.json();
 
             // 2. Upload to R2
-            await fetch(url, {
+            const uploadRes = await fetch(url, {
                 method: "PUT",
                 body: file,
                 headers: { "Content-Type": file.type },
             });
 
+            if (!uploadRes.ok) {
+                throw new Error(`R2 upload failed: ${uploadRes.statusText}`);
+            }
+
             // 3. Construct public URL
-            // Assuming NEXT_PUBLIC_R2_DOMAIN is set, e.g., https://pub-xxx.r2.dev
-            // If not set, we'll fallback to just the key for now, but that won't display.
             const domain = process.env.NEXT_PUBLIC_R2_DOMAIN || "";
             const publicUrl = domain ? `${domain}/${key}` : key;
 
-            setPreview(publicUrl);
+            // Keep local preview but use public URL for saving
             onUploadComplete(publicUrl);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Upload failed", error);
-            alert("Upload failed");
+            alert(`Upload failed: ${error.message}`);
+            // Revert preview on error
+            setPreview(undefined);
         } finally {
             setUploading(false);
         }
