@@ -38,3 +38,21 @@ export interface Session {
     createdAt: string;
     order?: number;
 }
+
+export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    dateOfBirth: string; // Firestore timestamp converted to ISO string
+    heightFeet: number;
+    heightInches: number;
+    weightPounds: number;
+    experienceLevel: "Beginner" | "Intermediate" | "Advanced";
+    goals: string[];
+    currentProgramId: string;
+    currentDayNumber: number;
+    joinedDate: string; // Firestore timestamp converted to ISO string
+    lastCompletionDate?: string; // Firestore timestamp converted to ISO string
+    updatedAt?: string; // Firestore timestamp converted to ISO string
+}
