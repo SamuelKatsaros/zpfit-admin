@@ -205,17 +205,17 @@ export default function UsersPage() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 md:mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Users</h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Users</h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm md:text-base">
                         Manage all users across the app
                     </p>
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="bg-blue-100 dark:bg-blue-900 px-4 py-2 rounded-lg">
-                        <span className="text-blue-800 dark:text-blue-200 font-semibold">
-                            {users.length} Total Users
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                    <div className="bg-blue-100 dark:bg-blue-900 px-3 md:px-4 py-2 rounded-lg">
+                        <span className="text-blue-800 dark:text-blue-200 font-semibold text-sm md:text-base">
+                            {users.length} Users
                         </span>
                     </div>
                     <button
@@ -233,29 +233,30 @@ export default function UsersPage() {
                             });
                             setShowCreateModal(true);
                         }}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 py-2 rounded-lg flex items-center transition-colors text-sm md:text-base"
                         title="Add new user (always available)"
                     >
-                        <Plus className="w-5 h-5 mr-2" />
-                        Add User
+                        <Plus className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                        <span className="hidden sm:inline">Add User</span>
+                        <span className="sm:hidden">Add</span>
                     </button>
                     <button
                         onClick={toggleLock}
-                        className={`px-4 py-2 rounded-lg flex items-center transition-colors ${isLocked
-                                ? "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                                : "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-200 dark:hover:bg-yellow-800"
+                        className={`px-3 md:px-4 py-2 rounded-lg flex items-center transition-colors text-sm md:text-base ${isLocked
+                            ? "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                            : "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-200 dark:hover:bg-yellow-800"
                             }`}
                         title={isLocked ? "Click to unlock and enable editing/deletion" : "Click to lock and prevent editing/deletion"}
                     >
                         {isLocked ? (
                             <>
-                                <Lock className="w-5 h-5 mr-2" />
-                                Locked
+                                <Lock className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                                <span className="hidden sm:inline">Locked</span>
                             </>
                         ) : (
                             <>
-                                <LockOpen className="w-5 h-5 mr-2" />
-                                Unlocked
+                                <LockOpen className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                                <span className="hidden sm:inline">Unlocked</span>
                             </>
                         )}
                     </button>
@@ -338,10 +339,10 @@ export default function UsersPage() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${user.experienceLevel === "Beginner"
-                                                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                                                    : user.experienceLevel === "Intermediate"
-                                                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                                                        : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                                : user.experienceLevel === "Intermediate"
+                                                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                                                 }`}>
                                                 {user.experienceLevel}
                                             </span>

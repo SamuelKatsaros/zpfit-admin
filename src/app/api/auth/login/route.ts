@@ -1,4 +1,5 @@
 import { initAdmin } from "@/lib/firebase-admin";
+import { isAdmin } from "@/lib/admin-auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -9,6 +10,15 @@ export async function POST(request: Request) {
 
         // Verify the ID token
         const decodedToken = await admin.auth().verifyIdToken(token);
+
+        // Check if user is an admin
+        const adminStatus = await isAdmin(decodedToken.uid);
+        if (!adminStatus) {
+            return NextResponse.json(
+                { error: "Access denied: Admin privileges required" },
+                { status: 403 }
+            );
+        }
 
         // Create session cookie
         const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
@@ -28,3 +38,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 }
+

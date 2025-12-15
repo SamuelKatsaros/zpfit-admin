@@ -37,11 +37,26 @@ export default function LoginPage() {
             if (response.ok) {
                 router.push("/admin");
             } else {
-                setError("Failed to create session");
+                const data = await response.json();
+                // Show specific error message for non-admins
+                if (response.status === 403) {
+                    setError(data.error || "Access denied: Admin privileges required");
+                } else {
+                    setError(data.error || "Failed to create session");
+                }
             }
         } catch (err: any) {
             console.error(err);
-            setError(err.message || "Failed to login");
+            // Better error messages for common Firebase Auth errors
+            if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+                setError("Invalid email or password");
+            } else if (err.code === "auth/invalid-credential") {
+                setError("Invalid email or password");
+            } else if (err.code === "auth/too-many-requests") {
+                setError("Too many failed attempts. Please try again later.");
+            } else {
+                setError(err.message || "Failed to login");
+            }
         } finally {
             setLoading(false);
         }

@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { LogOut, LayoutDashboard, Dumbbell, Video, Users } from "lucide-react";
+import AdminNavigation from "@/components/AdminNavigation";
 
 export default function AdminLayout({
     children,
@@ -7,47 +6,16 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-            {/* Sidebar */}
-            <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 fixed h-full">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">ZP Fit Admin</h1>
-                </div>
-                <nav className="mt-6">
-                    <Link
-                        href="/admin"
-                        className="flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                        <LayoutDashboard className="w-5 h-5 mr-3" />
-                        Programs
-                    </Link>
-                    <Link
-                        href="/admin/sessions"
-                        className="flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                        <Video className="w-5 h-5 mr-3" />
-                        Sessions
-                    </Link>
-                    <Link
-                        href="/admin/users"
-                        className="flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                        <Users className="w-5 h-5 mr-3" />
-                        Users
-                    </Link>
-                </nav>
-                <div className="absolute bottom-0 w-64 p-6 border-t border-gray-200 dark:border-gray-700">
-                    <button className="flex items-center text-gray-700 dark:text-gray-300 hover:text-red-500 transition-colors w-full">
-                        <LogOut className="w-5 h-5 mr-3" />
-                        Sign Out
-                    </button>
-                </div>
-            </aside>
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+            <AdminNavigation />
 
-            {/* Main Content */}
-            <main className="flex-1 p-8 ml-64 overflow-y-auto min-h-screen">
-                {children}
+            {/* Main Content - adjusted for mobile header and desktop sidebar */}
+            <main className="pt-16 md:pt-0 md:ml-64 min-h-screen">
+                <div className="p-4 md:p-8">
+                    {children}
+                </div>
             </main>
         </div>
     );
 }
+
